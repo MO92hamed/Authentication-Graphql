@@ -35,7 +35,7 @@ this repositorie is an authentication ,comment and post using MongoDB, expressjs
 
    - index
 
-- Create a graphql-server with get
+- Create a graphql-server with get(/graphql)
 
 - Create a  graphql using express
 
