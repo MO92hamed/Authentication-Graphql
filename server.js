@@ -6,8 +6,7 @@ const schema = require("./graphql/schema")
 const { connectDB } = require("./db")
 const app = express()
 dotenv.config()
-connectDB()
-
+connectDB();
 const { authenticate } = require("./middleware/auth")
 
 app.use(authenticate)
