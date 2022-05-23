@@ -25,6 +25,19 @@ this repositorie is an authentication ,comment and post using MongoDB, expressjs
 
 - Connect to database.
 
+```bash
+
+const connectDB = async () => {
+  const connect = await mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  console.log(`MongoDB connected`)
+}
+
+module.exports = { connectDB }
+```
+
 - Create  models
    
    - User
@@ -35,7 +48,38 @@ this repositorie is an authentication ,comment and post using MongoDB, expressjs
 
    - index
 
+- Create and assign a JWT
+
+```bash
+
+const jwt = require("jsonwebtoken")
+
+const authenticate = async (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1] || ""
+
+  try {
+    const verified = jwt.verify(token, process.env.JWT_SECRET)
+    req.verifiedUser = verified.user
+    console.log("Verification success!", verified)
+    next()
+  } catch (err) {
+    console.log("Verification failed!", err)
+    next()
+  }
+}
+
+module.exports = { authenticate }
+
+```
+
 - Create a graphql-server with get(/graphql)
+
+```bash
+
+app.get("/", (req, res) => {
+  res.json({ msg: "Welcome! Go to /graphql" })
+})
+```
 
 - Create a  graphql using express
 
@@ -52,7 +96,21 @@ this repositorie is an authentication ,comment and post using MongoDB, expressjs
         - post
         - posts
      - schema
+     
      - types    
+    
+     -Graphql-server
+
+```bash
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+)
+
+```
 
 
      
@@ -72,12 +130,4 @@ To deploy this project run
 
 - [@MO92hamed](https://github.com/MO92hamed)
 
-
-## Badges
-
-Add badges from somewhere like: [shields.io](https://shields.io/)
-
-[![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?)](https://github.com/tterb/atomic-design-ui/blob/master/LICENSEs)
-[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
-[![AGPL License](https://img.shields.io/badge/license-AGPL-blue.svg)](http://www.gnu.org/licenses/agpl-3.0)
 
